@@ -212,9 +212,6 @@
 
       <h2>Monitored Parameters & Medical IoT Devices</h2>
 
-      <!-- PATIENT DASHBOARD (runs in browser, replaces PHP version) -->
-      <div class="patient-dashboard" id="patient-dashboard"></div>
-
       <div class="table-wrapper">
 
         <table>
@@ -559,101 +556,6 @@
 
   <!-- BACK TO TOP -->
   <a href="#home" class="top-button">↑</a>
-
-  <script>
-  (function() {
-    var patients = [
-      { name: "Aruzhan",  age: 45, temperature: 37.2, pulse: 82 },
-      { name: "Dias",     age: 52, temperature: 38.1, pulse: 96 },
-      { name: "Madina",   age: 39, temperature: 36.7, pulse: 74 },
-      { name: "Alikhan",  age: 61, temperature: 37.8, pulse: 105 },
-      { name: "Dana",     age: 48, temperature: 36.5, pulse: 68 }
-    ];
-
-    function getStatus(temperature, pulse) {
-      if (pulse < 60) return "Check required";
-      if (temperature > 37.5 || pulse > 100) return "Attention";
-      return "Normal";
-    }
-
-    function escapeHtml(s) {
-      var d = document.createElement("div");
-      d.textContent = s;
-      return d.innerHTML;
-    }
-
-    function statusClass(status) {
-      if (status === "Normal") return "status-normal";
-      if (status === "Attention") return "status-attention";
-      return "status-check";
-    }
-
-    var count = patients.length;
-    var avgAge = 0, avgTemp = 0, avgPulse = 0;
-    var highestPulse = 0, lowestTemp = Infinity;
-    var attentionCount = 0;
-
-    for (var i = 0; i < count; i++) {
-      var p = patients[i];
-      avgAge += p.age;
-      avgTemp += p.temperature;
-      avgPulse += p.pulse;
-      if (p.pulse > highestPulse) highestPulse = p.pulse;
-      if (p.temperature < lowestTemp) lowestTemp = p.temperature;
-      if (getStatus(p.temperature, p.pulse) === "Attention") attentionCount++;
-    }
-    if (count > 0) {
-      avgAge = (avgAge / count).toFixed(1);
-      avgTemp = (avgTemp / count).toFixed(1);
-      avgPulse = (avgPulse / count).toFixed(1);
-      lowestTemp = lowestTemp.toFixed(1);
-    }
-
-    var statsHtml =
-      '<div class="patient-dashboard-header">' +
-        '<div>' +
-          '<span class="device-tag">LIVE DATA ANALYSIS</span>' +
-          '<h3>Patient Monitoring Dashboard</h3>' +
-          '<p>Patient health data is processed dynamically using JavaScript arrays, functions, conditions and loops.</p>' +
-        '</div>' +
-        '<div class="live-indicator">' +
-          '<span class="status-dot"></span> Monitoring Active' +
-        '</div>' +
-      '</div>' +
-      '<div class="patient-stats">' +
-        '<div class="patient-stat"><span class="stat-icon">👥</span><strong>' + count + '</strong><small>Total Patients</small></div>' +
-        '<div class="patient-stat"><span class="stat-icon">🎂</span><strong>' + avgAge + '</strong><small>Average Age</small></div>' +
-        '<div class="patient-stat"><span class="stat-icon">🌡️</span><strong>' + avgTemp + '°C</strong><small>Average Temperature</small></div>' +
-        '<div class="patient-stat"><span class="stat-icon">❤</span><strong>' + avgPulse + '</strong><small>Average Pulse</small></div>' +
-        '<div class="patient-stat"><span class="stat-icon">📈</span><strong>' + highestPulse + '</strong><small>Highest Pulse</small></div>' +
-        '<div class="patient-stat"><span class="stat-icon">❄️</span><strong>' + lowestTemp + '°C</strong><small>Lowest Temperature</small></div>' +
-        '<div class="patient-stat attention-stat"><span class="stat-icon">⚠</span><strong>' + attentionCount + '</strong><small>Attention Required</small></div>' +
-      '</div>';
-
-    var tableHtml =
-      '<div class="table-wrapper patient-table">' +
-        '<table>' +
-          '<thead><tr><th>Patient</th><th>Age</th><th>Temperature</th><th>Pulse</th><th>Status</th></tr></thead>' +
-          '<tbody>';
-
-    for (var j = 0; j < count; j++) {
-      var pt = patients[j];
-      var st = getStatus(pt.temperature, pt.pulse);
-      tableHtml +=
-        '<tr>' +
-          '<td><div class="patient-name"><div><strong>' + escapeHtml(pt.name) + '</strong></div></div></td>' +
-          '<td>' + pt.age + ' years</td>' +
-          '<td>' + pt.temperature.toFixed(1) + ' °C</td>' +
-          '<td>' + pt.pulse + ' bpm</td>' +
-          '<td><span class="' + statusClass(st) + '">' + st + '</span></td>' +
-        '</tr>';
-    }
-
-    tableHtml += '</tbody></table></div>';
-
-    document.getElementById("patient-dashboard").innerHTML = statsHtml + tableHtml;
-  })();
-  </script>
 
 </body>
 </html>
